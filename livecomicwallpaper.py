@@ -1,24 +1,39 @@
 #!/usr/local/bin/python3
 # -*- coding: utf-8 -*-
 
-"""A short description of the module -- called a docstring."""
+"""A Python script turned cron job to grab and assign the latest Calvin & Hobbes comic strip to my MacBook's wallpaper"""
 
 # Here comes your imports
+import sys
 import datetime
-
-# Here comes your (few) global variables
-# Here comes your class definitions
-# Here comes your function definitions
+import urllib.request
+import re
 
 
 def main():
+
+    print(len(sys.argv))  # Debug the arg by output to terminal
+
+    # Build the "today" URL variable
     url = "https://www.gocomics.com/calvinandhobbesespanol/"
+    if len(sys.argv) < 2:
+        today = datetime.datetime.now()
+        url += today.strftime("%Y/%m/%d/")
+    else:
+        url += sys.argv[1]
+        if url[-1] != "/":
+            url += "/"
 
-    today = datetime.datetime.now()
+    print(url)  # Debug the string by output to terminal
 
-    url += today.strftime("%Y/%m/%d/")
+    req = urllib.request.Request(url)
+    resp = urllib.request.urlopen(req)
+    respData = resp.read()
 
-    print(url)
+    paragraphs = re.findall(r"https://assets\.amuniversal[^\"]*", str(respData))
+
+    for eachP in paragraphs:  # Debug HTML contents to terminal
+        print(eachP)
 
     return 0
 
