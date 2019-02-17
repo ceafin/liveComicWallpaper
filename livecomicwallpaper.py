@@ -9,6 +9,7 @@ import datetime
 import urllib.request
 from urllib.request import urlretrieve
 import re
+from appscript import app, mactypes
 
 
 def main():
@@ -42,6 +43,9 @@ def main():
 
     # Grab asset and write to workstation
     urlretrieve(comic, "/tmp/liveComic.png")
+
+    # Set wallpaper
+    app("Finder").desktop_picture.set(mactypes.File("/tmp/liveComic.png"))
 
     return 0
 
