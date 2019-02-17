@@ -7,6 +7,7 @@
 import sys
 import datetime
 import urllib.request
+from urllib.request import urlretrieve
 import re
 
 
@@ -26,14 +27,21 @@ def main():
 
     print(url)  # Debug the string by output to terminal
 
+    # Request URL, Open it, Read in data
     req = urllib.request.Request(url)
     resp = urllib.request.urlopen(req)
     respData = resp.read()
 
-    paragraphs = re.findall(r"https://assets\.amuniversal[^\"]*", str(respData))
+    # Regex to find the comic graphic asset
+    if re.search(r"https://assets\.amuniversal[^\"]*", str(respData)):
+        comic = re.findall(r"https://assets\.amuniversal[^\"]*", str(respData))[0]
+    else:
+        return 1
 
-    for eachP in paragraphs:  # Debug HTML contents to terminal
-        print(eachP)
+    print(comic)  # Debug the string of the comic found
+
+    # Grab asset and write to workstation
+    urlretrieve(comic, "/tmp/liveComic.png")
 
     return 0
 
