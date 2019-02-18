@@ -10,6 +10,7 @@ import urllib.request
 from urllib.request import urlretrieve
 import re
 from appscript import app, mactypes
+import os
 
 
 def main():
@@ -42,6 +43,7 @@ def main():
     print(comic)  # Debug the string of the comic found
 
     # Grab asset and write to workstation
+    os.remove("/tmp/liveComic.png")
     urlretrieve(comic, "/tmp/liveComic.png")
 
     # Set wallpaper
