@@ -43,7 +43,11 @@ def main():
     print(comic)  # Debug the string of the comic found
 
     # Grab asset and write to workstation
-    os.remove("/tmp/liveComic.png")
+    try:
+        os.remove("/tmp/liveComic.png")
+    except OSError:
+        pass
+
     urlretrieve(comic, "/tmp/liveComic.png")
 
     # Set wallpaper
